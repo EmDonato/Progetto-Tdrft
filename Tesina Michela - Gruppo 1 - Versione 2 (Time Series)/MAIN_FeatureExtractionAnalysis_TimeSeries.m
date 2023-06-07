@@ -44,6 +44,7 @@ addpath("Function\VarDeactivatingEncoder\")
 % Qua selezionate quale dei vostri input è da analizzare come output
 
 
+Tollerance = 0.001;
 
 % extract output
 Y = X(i_target,:);
@@ -265,7 +266,7 @@ accfun = dlaccelerate(@ModelGradient_VarEnc_deActivation);
         drawnow
     
     W_old = struct2array(load('W_old.mat'));
-    if(all(abs(abs(W_old)-abs(W))<0.001))
+    if(all(abs(abs(W_old)-abs(W))<Tollerance))
         fprintf('USCITOOOOOOOO');
         break
     end

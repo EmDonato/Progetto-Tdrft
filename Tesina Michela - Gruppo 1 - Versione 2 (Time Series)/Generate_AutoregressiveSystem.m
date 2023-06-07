@@ -29,7 +29,7 @@ I(6,5) = 0.4;
 %% configuration 2
 
 N = 1e4;
-M = 6;
+M = 3;
 
 % I = interaction matrix
 I = zeros(M,M);
@@ -39,9 +39,6 @@ I = zeros(M,M);
 I(1,1) = 0;
 I(2,2) = 0;
 I(3,3) = 0;
-I(4,4) = 1;
-I(5,5) = 1;
-I(6,6) = 1;
 
 %% configuration 3
 
@@ -97,7 +94,7 @@ I = zeros(M,M);
 I(1,2) = 1;
 I(2,1) = 1;
 
-%% configuration 6
+%% configuration 7
 
 N = 1e4;
 M = 3;
