@@ -9,7 +9,7 @@ clear all; clc; warning off;
 % parametri per i cicli
 
 %NTarget = 6;
-NTarget = 3;
+NTarget = 6;
 W_old = zeros(NTarget);
 
 W_matrix = zeros(NTarget,NTarget);
@@ -24,7 +24,7 @@ clear all; clc; warning off;
 % parametri per i cicli
 Nepoch = 1000;
 %NTarget = 6;
-NTarget = 3;
+NTarget = 6;
 W_matrix = struct2array(load('W_matrix.mat'));
 i_target = int32(struct2array(load('i_target.mat')));
  fprintf('Il valore di i_target è %.2f\n', i_target);

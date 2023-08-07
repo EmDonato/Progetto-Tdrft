@@ -1,6 +1,6 @@
 %% generate Autoregressive
 
-clear; clc;
+clear all; clc;
 
 %% configuration 1
 
