@@ -1,31 +1,54 @@
 % Questa sezione serve solo a "Pulire" gpu, workspace, etc.
-
-gpu = gpuDevice();
-reset(gpu)
-
-gpu = gpuDevice();
-disp(gpu)
-wait(gpu)
-
+% 
+% gpu = gpuDevice();
+% reset(gpu)
+% 
+% gpu = gpuDevice();
+% disp(gpu)
+% wait(gpu)
+% 
+% clear all; clc; warning off;
+% 
+% figure(3)
+% clf
+%%
 clear all; clc; warning off;
 
-figure(3)
-clf
+% parametri per i cicli
+
+NTarget = 6;
+W_old = zeros(NTarget);
+
+W_matrix = zeros(NTarget,NTarget);
+i_target = 1;
+save('W_old.mat','W_old');
+save('W_matrix.mat','W_matrix');
+save('i_target.mat','i_target');
+for i_target = 1 : NTarget
+    W_old = struct2array(load('W_old.mat'));
+    clear all; clc; warning off;
+    % parametri per i cicli
+    Nepoch = 10;
+    NTarget = 6;
+    W_matrix = struct2array(load('W_matrix.mat'));
+    i_target = int32(struct2array(load('i_target.mat')));
+     fprintf('Il valore di i_target è %.2f\n', i_target);
+    figure(3)
+    clf
+
+
 
 %% load data 
 % (qua decidete quale dataset volete analizzare,
 % potete generarli a piacere)
 addpath("Datasets\Synthetic\")
-load("AR_Krakovska_C_=_0.05.mat")
+load("Autoregressive_v1.mat")
 
 %% add paths (dove ci sono le funzioni utilizzate dopo)
 
 addpath("Function\VarDeactivatingEncoder\")
 
 %% Prepare input and output
-
-% Qua selezionate quale dei vostri input è da analizzare come output
-i_target = 2;
 
 % extract output
 Y = X(i_target,:);
@@ -161,7 +184,7 @@ accfun = dlaccelerate(@ModelGradient_VarEnc_deActivation_BIC);
 %% Training
 % da qua inizia il processo di training vero e proprio
 
-for epoch = 1 : 3000
+for epoch = 1 : Nepoch
 
     % resetto e randomizzo i dati di training
     reset(mbq)
@@ -212,6 +235,11 @@ for epoch = 1 : 3000
 
     % calcolo le loss nei due casi
     MSE_Test = mean((Ytest(ktest,:)-Yptest).^2);
+
+
+    % Calcola falsi positivi e falsi negativi
+  %  false_positives = sum(predictions == 1 & labels == 0);
+  %  false_negatives = sum(predictions == 0 & labels == 1);
 
     % questi sono i pesi del primo layer per fare feature selection
     W = double(extractdata(gather(parameters.W.weights)));
@@ -294,11 +322,56 @@ for epoch = 1 : 3000
         end
 
     end
+  W_old = struct2array(load('W_old.mat'));
+    if(all(abs(abs(W_old)-abs(W))<0.001))
+        fprintf('USCITOOOOOOOO');
+        break
+    end
+    save('W_old.mat','W');
 
+    W_display = abs(abs(W_old)-abs(W));
+    disp(W_display);
 
 
 end
 
+
+
+
+
+switch i_target
+    case 1
+        save('w1.mat', 'W');
+    case 2
+        save('w2.mat', 'W');
+    case 3
+        save('w3.mat', 'W');
+    case 4
+        save('w4.mat', 'W');
+    case 5
+        save('w5.mat', 'W');
+    case 6
+        save('w6.mat', 'W');        
+    otherwise
+        disp("errore servono piu variabili");
+end
+W_matrix(:,i_target) = W;
+i_target = i_target + 1;
+fprintf('Il valore di i_target è %.2f\n', i_target);
+save('i_target.mat','i_target');
+W_matrix(W_matrix < 0.1) = 0;
+W_matrix(W_matrix > 0.1) = 1;
+save('W_matrix.mat','W_matrix');
+% Ottieni le coordinate degli archi nella matrice
+[righe, colonne] = find(W_matrix);
+
+% Crea il grafo orientato
+grafo = digraph(righe, colonne);
+
+% Visualizza il grafo
+figure(1)
+plot(grafo);
+
 Best.W = Best.W';
 save("Last_Results","Best")
-
+end
