@@ -24,11 +24,12 @@ i_target = 1;
 save('W_old.mat','W_old');
 save('W_matrix.mat','W_matrix');
 save('i_target.mat','i_target');
+%%
 for i_target = 1 : NTarget
     W_old = struct2array(load('W_old.mat'));
     clear all; clc; warning off;
     % parametri per i cicli
-    Nepoch = 10;
+    Nepoch = 100;
     NTarget = 6;
     W_matrix = struct2array(load('W_matrix.mat'));
     i_target = int32(struct2array(load('i_target.mat')));
@@ -249,7 +250,7 @@ for epoch = 1 : Nepoch
     
     %% Faccio vari plot
 
-    figure(3)
+    figure(2)
     subplot(2,3,1)
     hold on
     plot(epoch,Loss,'.b','markersize',16)
@@ -359,19 +360,26 @@ W_matrix(:,i_target) = W;
 i_target = i_target + 1;
 fprintf('Il valore di i_target è %.2f\n', i_target);
 save('i_target.mat','i_target');
-W_matrix(W_matrix < 0.1) = 0;
-W_matrix(W_matrix > 0.1) = 1;
+%W_matrix(W_matrix < 0.1) = 0;
+%W_matrix(W_matrix > 0.1) = 1;
 save('W_matrix.mat','W_matrix');
+
+Best.W = Best.W';
+save("Last_Results","Best")
+end
+%%
+%inizializzazione parametri per il calcolo delle performance
+[TrueP,TrueN,FalseP,FalseN,W_graph] = Performance(W_matrix,I)
 % Ottieni le coordinate degli archi nella matrice
-[righe, colonne] = find(W_matrix);
+[righe, colonne] = find(W_graph);
 
 % Crea il grafo orientato
 grafo = digraph(righe, colonne);
 
 % Visualizza il grafo
-figure(1)
+figure(99)
 plot(grafo);
 
-Best.W = Best.W';
-save("Last_Results","Best")
-end
+
+
+
