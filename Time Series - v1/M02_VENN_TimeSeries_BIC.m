@@ -369,7 +369,7 @@ save("Last_Results","Best")
 end
 %%
 %inizializzazione parametri per il calcolo delle performance
-[TrueP,TrueN,FalseP,FalseN,W_graph] = Performance(W_matrix,I)
+[TrueP,TrueN,FalseP,FalseN,W_graph] = PerformanceNew(W_matrix,I)
 % Ottieni le coordinate degli archi nella matrice
 [righe, colonne] = find(W_graph);
 
