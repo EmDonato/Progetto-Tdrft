@@ -20,7 +20,7 @@ COSE DA FARE:
 
 	2)implementare in performanceNew.m l'AUC area sotto la curva 
 
-	£) mettere i cambiamenti anche nella vecchia versione cosi da poter testare
+	3) mettere i cambiamenti anche nella vecchia versione cosi da poter testare
 
 	4) simulazione del classificatore per ogni sistema (ottenere numero falsi positivi, ecc...(?)), ovvero testare
 		(prima quelli semplici, caso 1, caso 2, caso 3 ecc... confrontare con la vecchia verdiose quella prima del bim)
