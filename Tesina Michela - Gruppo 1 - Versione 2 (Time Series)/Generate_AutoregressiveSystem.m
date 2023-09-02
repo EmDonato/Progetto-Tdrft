@@ -137,5 +137,3 @@ end
 
 %% SAVE
 save('Autoregressive_v1.mat');
-
-

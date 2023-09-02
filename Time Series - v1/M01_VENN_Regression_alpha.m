@@ -1,26 +1,61 @@
 % Questa sezione serve solo a "Pulire" gpu, workspace, etc.
 
-gpu = gpuDevice();
-reset(gpu)
-
-gpu = gpuDevice();
-disp(gpu)
-wait(gpu)
+% gpu = gpuDevice();
+% reset(gpu)
+% 
+% gpu = gpuDevice();
+% disp(gpu)
+% wait(gpu)
 
 clear all; clc; warning off;
 
 figure(3)
 clf
-
+i_target = 1;
 %% load data 
 % (qua decidete quale dataset volete analizzare,
 % potete generarli a piacere)
 
-load("Data_LinearRegression_Corr.mat")
+%% load data 
+% (qua decidete quale dataset volete analizzare,
+% potete generarli a piacere)
+addpath("Datasets\Synthetic\")
+load("Autoregressive_v1.mat")
 
 %% add paths (dove ci sono le funzioni utilizzate dopo)
 
 addpath("Function\VarDeactivatingEncoder\")
+
+%% Prepare input and output
+
+% extract output
+Y = X(i_target,:);
+
+% select delays (per ora lasciate così, poi vi spiego)
+delays = [1];
+
+% Da qua fino alla prossima selezione mi giro i dati in una maniera comoda
+% (la prossima volta vi spiego bene)
+maximum_delays = max(delays);
+
+D = [];
+
+Label_features = [];
+
+for i = 1 : size(X,1)
+
+    Label_features = [Label_features; "x_"+ i + "(t - " + delays' + ")"];
+    
+    B = buffer(X(i,:),maximum_delays,maximum_delays-1);
+
+    D = [D; B(delays,:)];
+
+end
+
+Features = D;
+
+Features = Features(:,maximum_delays:end-maximum_delays)';
+Targets = Y(2*maximum_delays:end)';
 
 %% weights generation
 % (lasciate zero, i pesi saranno tutti uguali a 1 
@@ -39,6 +74,17 @@ else
     W_density = ones(size(Y));
 
 end
+
+%% Normalisation (normalizzo i dati)
+
+Norm.Fmean = mean(Features,1);
+Norm.Fstd = std(Features,[],1);
+
+Norm.Tmean = mean(Targets,1);
+Norm.Tstd = std(Targets,[],1);
+
+Features = (Features' - Norm.Fmean')./Norm.Fstd';
+Targets = (Targets' - Norm.Tmean')./Norm.Tstd';
 
 %% Variational Deactivation Neural Network
 
@@ -281,5 +327,4 @@ end
 save("Results and Comparisons\Results_01.mat","X","Y","Xlabel","Ylabel",...
     "parameters","LossTest","LossTrain","alpha","averageSqGrad","averageGrad",...
     "Norm","L0","D0")
-
 
