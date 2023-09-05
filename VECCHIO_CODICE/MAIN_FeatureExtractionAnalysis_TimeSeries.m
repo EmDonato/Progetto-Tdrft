@@ -5,32 +5,30 @@
 % disp(gpu)
 % wait(gpu)
 clear all; clc; warning off;
-%%
+
 % parametri per i cicli
 
-%NTarget = 6;
 NTarget = 6;
+%NTarget = 3;
 W_old = zeros(NTarget);
-
+figure(3);
 W_matrix = zeros(NTarget,NTarget);
 i_target = 1;
 save('W_old.mat','W_old');
 save('W_matrix.mat','W_matrix');
 save('i_target.mat','i_target');
-%%
 for i_target = 1 : NTarget
 
-
-clear all; clc; warning off;
 W_old = struct2array(load('W_old.mat'));
+clear all; clc; warning off;
 % parametri per i cicli
-Nepoch = 100;
-%NTarget = 6;
+Nepoch = 200;
 NTarget = 6;
+%NTarget = 3;
 W_matrix = struct2array(load('W_matrix.mat'));
 i_target = int32(struct2array(load('i_target.mat')));
  fprintf('Il valore di i_target è %.2f\n', i_target);
-figure()
+figure(3)
 clf
 
 %% load data
@@ -46,7 +44,6 @@ addpath("Function\VarDeactivatingEncoder\")
 % Qua selezionate quale dei vostri input è da analizzare come output
 
 
-Tollerance = 0.001;
 
 % extract output
 Y = X(i_target,:);
@@ -268,7 +265,7 @@ accfun = dlaccelerate(@ModelGradient_VarEnc_deActivation);
         drawnow
     
     W_old = struct2array(load('W_old.mat'));
-    if(all(abs(abs(W_old)-abs(W))<Tollerance))
+    if(all(abs(abs(W_old)-abs(W))<0.001))
         fprintf('USCITOOOOOOOO');
         break
     end
@@ -299,11 +296,14 @@ W_matrix(:,i_target) = W;
 i_target = i_target + 1;
 fprintf('Il valore di i_target è %.2f\n', i_target);
 save('i_target.mat','i_target');
+%W_matrix(W_matrix < 0.1) = 0;
+%W_matrix(W_matrix > 0.1) = 1;
+save('W_matrix.mat','W_matrix');
+
+% Best.W = Best.W';
+% save("Last_Results","Best")
 
 end
-
-
-
 %%
 %inizializzazione parametri per il calcolo delle performance
 [TrueP,TrueN,FalseP,FalseN,W_graph] = PerformanceNew(W_matrix,I)
@@ -316,3 +316,6 @@ grafo = digraph(righe, colonne);
 % Visualizza il grafo
 figure(99)
 plot(grafo);
+
+
+
