@@ -1,6 +1,6 @@
 %% generate Autoregressive
 
-clear; clc;
+clear all; clc;
 
 %% configuration 1
 
@@ -30,6 +30,8 @@ X = calculate_autoregressive(M,N,I);
 save('Autoregressive_v1.mat');
 
 %% configuration 2
+clear all; clc;
+
 
 N = 1e4;
 M = 3;
@@ -48,15 +50,14 @@ X = calculate_autoregressive(M,N,I);
 save('Autoregressive_v2.mat');
 
 %% configuration 3
+clear all; clc;
 
 N = 1e4;
 M = 3;
 
 % I = interaction matrix
 I = zeros(M,M);
-I(1,3) = 1;
-I(1,1) = 0;
-I(1,2) = 0.3;
+
 % I(i,j) significa che i causa j con intensità I(i,j) 
 
 X = calculate_autoregressive(M,N,I);
@@ -65,7 +66,7 @@ save('Autoregressive_v3.mat');
 
 
 %% configuration 4
-
+clear all; clc;
 N = 1e4;
 M = 3;
 
@@ -82,7 +83,7 @@ X = calculate_autoregressive(M,N,I);
 save('Autoregressive_v4.mat');
 
 %% configuration 5
-
+clear all; clc;
 N = 1e4;
 M = 3;
 
@@ -99,7 +100,7 @@ X = calculate_autoregressive(M,N,I);
 save('Autoregressive_v5.mat');
 
 %% configuration 6
-
+clear all; clc;
 N = 1e4;
 M = 3;
 
@@ -116,7 +117,7 @@ X = calculate_autoregressive(M,N,I);
 save('Autoregressive_v6.mat');
 
 %% configuration 7
-
+clear all; clc;
 N = 1e4;
 M = 3;
 

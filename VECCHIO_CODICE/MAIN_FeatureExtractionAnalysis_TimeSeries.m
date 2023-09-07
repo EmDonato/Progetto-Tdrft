@@ -7,9 +7,9 @@
 clear all; clc; warning off;
 
 % parametri per i cicli
-
-NTarget = 6;
-%NTarget = 3;
+j_autoregressive_targhet = 1;
+%NTarget = 6;
+NTarget = 3;
 W_old = zeros(NTarget);
 figure(3);
 W_matrix = zeros(NTarget,NTarget);
@@ -17,23 +17,42 @@ i_target = 1;
 save('W_old.mat','W_old');
 save('W_matrix.mat','W_matrix');
 save('i_target.mat','i_target');
+
+
+%%
+% autoregressiveST = ['Autoregressive_v2.mat',"Autoregressive_v3.mat",'Autoregressive_v4.mat','Autoregressive_v5.mat','Autoregressive_v6.mat','Autoregressive_v7.mat','Autoregressive_v8.mat'];
+
+for j_autoregressive_targhet = 1:7
+
+    save('j_autoregressive_targhet.mat','j_autoregressive_targhet');
+    i_target = 1;
+    save('i_target.mat','i_target');
+
 for i_target = 1 : NTarget
+      
+
 
 W_old = struct2array(load('W_old.mat'));
 clear all; clc; warning off;
+autoregressiveST = ['Autoregressive_v2.mat',"Autoregressive_v3.mat",'Autoregressive_v4.mat','Autoregressive_v5.mat','Autoregressive_v6.mat','Autoregressive_v7.mat','Autoregressive_v8.mat'];
+
+    
 % parametri per i cicli
-Nepoch = 200;
-NTarget = 6;
-%NTarget = 3;
+Nepoch = 100;
+%NTarget = 6;
+NTarget = 3;
 W_matrix = struct2array(load('W_matrix.mat'));
 i_target = int32(struct2array(load('i_target.mat')));
+j_autoregressive_targhet = int32(struct2array(load('j_autoregressive_targhet.mat')));
+    disp('Valore di j_autoregressive_targhet: ');
+    disp( j_autoregressive_targhet);
  fprintf('Il valore di i_target è %.2f\n', i_target);
 figure(3)
 clf
 
 %% load data
 
-load("Autoregressive_v1.mat")
+load(autoregressiveST(j_autoregressive_targhet))
 
 %% add paths
 
@@ -294,7 +313,7 @@ switch i_target
 end
 W_matrix(:,i_target) = W;
 i_target = i_target + 1;
-fprintf('Il valore di i_target è %.2f\n', i_target);
+%fprintf('Il valore di i_target è %.2f\n', i_target);
 save('i_target.mat','i_target');
 %W_matrix(W_matrix < 0.1) = 0;
 %W_matrix(W_matrix > 0.1) = 1;
@@ -303,19 +322,102 @@ save('W_matrix.mat','W_matrix');
 % Best.W = Best.W';
 % save("Last_Results","Best")
 
+switch j_autoregressive_targhet
+    case 1
+        save('I2.mat','I')
+        save('W_matrix2.mat','W_matrix');
+    case 2
+        save('I3.mat','I')
+        save('W_matrix3.mat','W_matrix');
+    case 3
+        save('I4.mat','I')
+        save('W_matrix4.mat','W_matrix');
+    case 4
+        save('I5.mat','I')
+        save('W_matrix5.mat','W_matrix');
+    case 5
+        save('I6.mat','I')
+        save('W_matrix6.mat','W_matrix');
+    case 6
+        save('I7.mat','I')
+        save('W_matrix7.mat','W_matrix');
+    case 7
+        save('I8.mat','I')
+        save('W_matrix8.mat','W_matrix');
+    otherwise
+        disp("errore servono piu variabili");
 end
+
+save('j_autoregressive_targhet.mat','j_autoregressive_targhet');
+
+
+
+end
+end
+
+%% solo se sono 8 le matrici
+
+
+  W_matrix2 = struct2array(load('W_matrix2.mat'));
+  ausW2colomn = W_matrix2(:);
+  W_matrix3 = struct2array(load('W_matrix3.mat'));
+  ausW3colomn = W_matrix3(:);
+  W_matrix4 = struct2array(load('W_matrix4.mat'));
+  ausW4colomn = W_matrix4(:);
+  W_matrix5 = struct2array(load('W_matrix5.mat'));
+  ausW5colomn = W_matrix5(:);
+  W_matrix6 = struct2array(load('W_matrix6.mat'));
+  ausW6colomn = W_matrix6(:);
+  W_matrix7 = struct2array(load('W_matrix7.mat'));
+  ausW7colomn = W_matrix7(:);
+  W_matrix8 = struct2array(load('W_matrix8.mat'));
+  ausW8colomn = W_matrix8(:);
+  W_matrixTotal = horzcat(ausW2colomn,ausW3colomn,ausW4colomn,ausW5colomn,ausW6colomn,ausW7colomn,ausW8colomn);
+  W_matrixTotalColomn = W_matrixTotal(:);
+%% stessa cosa per le matrici I
+  I2 = struct2array(load('I2.mat'));
+  I2colomn = I2(:);
+  I3 = struct2array(load('I3.mat'));
+  I3colomn = I3(:);
+  I4 = struct2array(load('I4.mat'));
+  I4colomn = I4(:);
+  I5 = struct2array(load('I5.mat'));
+  I5colomn = I5(:);
+  I6 = struct2array(load('I6.mat'));
+  I6colomn = I6(:);
+  I7 = struct2array(load('I7.mat'));
+  I7colomn = I7(:);
+
+  I8 = struct2array(load('I8.mat'));
+  I8colomn = I8(:);
+
+  ITotal = horzcat(I2colomn,I3colomn,I4colomn,I5colomn,I6colomn,I7colomn,I8colomn);
+  ITotalColomn = ITotal(:);
+
 %%
+
+
+
+
 %inizializzazione parametri per il calcolo delle performance
-[TrueP,TrueN,FalseP,FalseN,W_graph] = PerformanceNew(W_matrix,I)
-% Ottieni le coordinate degli archi nella matrice
-[righe, colonne] = find(W_graph);
+%[TrueP,TrueN,FalseP,FalseN,W_graph] = PerformanceNew(W_matrixTotal,ITotal)
 
-% Crea il grafo orientato
-grafo = digraph(righe, colonne);
+[soglia,AUC] = myROC(W_matrixTotal,ITotal);
 
-% Visualizza il grafo
-figure(99)
-plot(grafo);
-
+%%
+ CreateGraph(W_matrix7,I7,soglia)
+% %%
+% %inizializzazione parametri per il calcolo delle performance
+% %[TrueP,TrueN,FalseP,FalseN,W_graph] = PerformanceNew(W_matrix,I)
+% % Ottieni le coordinate degli archi nella matrice
+% [righe, colonne] = find(W_graph);
+% 
+% % Crea il grafo orientato
+% grafo = digraph(righe, colonne);
+% 
+% % Visualizza il grafo
+% figure(99)
+% plot(grafo);
+% 
 
 

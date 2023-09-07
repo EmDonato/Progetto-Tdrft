@@ -25,7 +25,7 @@ ausWcolomn = w(:);
 ausWcolomnCheck = ausWcolomn;
 %Roc
 
-numTrials = 1000;
+numTrials = 10000;
 if max(ausI) == 0
     maxnumb = 1;
     
@@ -79,7 +79,7 @@ FN = 0;
      FPR(j) = 0;
      FPR(1) = 1;
  else
-     FPR(j) =(FP/(FP+TN)) ;
+     FPR(j) = (FP/(FP+TN)) ;
  end
 
 fprintf('Valore di TP: %.4f\n', TP);
@@ -180,7 +180,7 @@ FN = 0;
 % 
 % end
 % 
-figure(43);
+figure(42);
 %% tabella di contingenza
 
 cm=confusionchart(ausIcolomn,ausWcolomn);
@@ -213,4 +213,6 @@ disp(['F1-score: ', num2str(F1_score)]);
      W_graph = reshape(ausWcolomn, M, N);
 %     
 % 
+disp(['threshold: ', threshold]);
+
  end

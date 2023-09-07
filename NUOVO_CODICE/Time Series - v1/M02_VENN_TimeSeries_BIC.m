@@ -12,31 +12,42 @@
 % figure(3)
 % clf
 %%
-clear all; clc; warning off;
+clear all; clc; warning off; close all;
 %%
 % parametri per i cicli
 
 NTarget = 3;% cambiare 
 W_old = zeros(NTarget);
-
+Nepoch = 100;
+epoch = 1
 W_matrix = zeros(NTarget,NTarget);
 i_target = 1;
 save('W_old.mat','W_old');
 save('W_matrix.mat','W_matrix');
 save('i_target.mat','i_target');
 %%
-%["Autoregressive_v8_C=0.mat","Autoregressive_v8_C=1.mat","Autoregressive_v8_C=2.mat","Autoregressive_v8_C=3.mat","Autoregressive_v8_C=13.mat","Autoregressive_v8_C=18.mat","Autoregressive_v8_C=20.mat"];
+    autoregressiveST = ['Autoregressive_v2.mat',"Autoregressive_v3.mat",'Autoregressive_v4.mat','Autoregressive_v5.mat','Autoregressive_v6.mat','Autoregressive_v7.mat'];
 
-
+for j_autoregressive_targhet = 1:6
+    save('j_autoregressive_targhet.mat','j_autoregressive_targhet');
+    i_target = 1;
+    save('i_target.mat','i_target');
+    fprintf('Valore di j_autoregressive_targhet: %.4f\n', j_autoregressive_targhet);
+    Nepoch = 100;
+    epoch = 1;
 for i_target = 1 : NTarget
+
     W_old = struct2array(load('W_old.mat'));
-    clear all; clc; warning off;
+    clear all; clc; warning off; close all;
+    autoregressiveST = ['Autoregressive_v2.mat',"Autoregressive_v3.mat",'Autoregressive_v4.mat','Autoregressive_v5.mat','Autoregressive_v6.mat','Autoregressive_v7.mat'];
+    epoch = 1
     % parametri per i cicli
     Nepoch = 100;
     NTarget = 3; % cambiare
     W_matrix = struct2array(load('W_matrix.mat'));
     i_target = int32(struct2array(load('i_target.mat')));
-     fprintf('Il valore di i_target è %.2f\n', i_target);
+    j_autoregressive_targhet = int32(struct2array(load('j_autoregressive_targhet.mat')));
+
     figure(3)
     clf
 
@@ -46,7 +57,12 @@ for i_target = 1 : NTarget
 % (qua decidete quale dataset volete analizzare,
 % potete generarli a piacere)
 addpath("Datasets\Synthetic\")
-load("Autoregressive_v9.mat")
+load(autoregressiveST(j_autoregressive_targhet))
+
+
+
+
+
 
 %% add paths (dove ci sono le funzioni utilizzate dopo)
 
@@ -194,6 +210,11 @@ for epoch = 1 : Nepoch
     reset(mbq)
     shuffle(mbq)
 
+%display epoche
+% disp('epoch = ');
+% disp(epoch);
+% disp('Nepoch = ');
+% disp(Nepoch);
     % svolgo un'iterazione per ogni minibatch
     for i = 1 : Train.IterationPerEpoch
 
@@ -334,7 +355,7 @@ for epoch = 1 : Nepoch
     save('W_old.mat','W');
 
      W_display = abs(abs(W_old)-abs(W));
-     disp(W_display);
+     %disp(W_display);
 
 end
 
@@ -360,7 +381,9 @@ switch i_target
 end
 W_matrix(:,i_target) = W;
 i_target = i_target + 1;
-fprintf('Il valore di i_target è %.2f\n', i_target);
+save('j_autoregressive_targhet.mat','j_autoregressive_targhet');
+
+%fprintf('Il valore di i_target è %.2f\n', i_target);
 save('i_target.mat','i_target');
 %W_matrix(W_matrix < 0.1) = 0;
 %W_matrix(W_matrix > 0.1) = 1;
@@ -370,28 +393,83 @@ save('W_matrix.mat','W_matrix');
 % save("Last_Results","Best")
 end
 %%
+switch j_autoregressive_targhet
+    case 1
+        save('I2.mat','I')
+        save('W_matrix2.mat','W_matrix');
+    case 2
+        save('I3.mat','I')
+        save('W_matrix3.mat','W_matrix');
+    case 3
+        save('I4.mat','I')
+        save('W_matrix4.mat','W_matrix');
+    case 4
+        save('I5.mat','I')
+        save('W_matrix5.mat','W_matrix');
+    case 5
+        save('I6.mat','I')
+        save('W_matrix6.mat','W_matrix');
+    case 6
+        save('I7.mat','I')
+        save('W_matrix7.mat','W_matrix');
+    otherwise
+        disp("errore servono piu variabili");
+end
+
+
+j_autoregressive_targhet = j_autoregressive_targhet +1;
+save('j_autoregressive_targhet.mat','j_autoregressive_targhet');
+
+
+
+
+end
+
+%% solo se sono 7 le matrici
+
+
+  W_matrix2 = struct2array(load('W_matrix2.mat'));
+  ausW2colomn = W_matrix2(:);
+  W_matrix3 = struct2array(load('W_matrix3.mat'));
+  ausW3colomn = W_matrix3(:);
+  W_matrix4 = struct2array(load('W_matrix4.mat'));
+  ausW4colomn = W_matrix4(:);
+  W_matrix5 = struct2array(load('W_matrix5.mat'));
+  ausW5colomn = W_matrix5(:);
+  W_matrix6 = struct2array(load('W_matrix6.mat'));
+  ausW6colomn = W_matrix6(:);
+  W_matrix7 = struct2array(load('W_matrix7.mat'));
+  ausW7colomn = W_matrix7(:);
+  W_matrixTotal = horzcat(ausW2colomn,ausW3colomn,ausW4colomn,ausW5colomn,ausW6colomn,ausW7colomn);
+  W_matrixTotalColomn = W_matrixTotal(:);
+%% stessa cosa per le matrici I
+  I2 = struct2array(load('I2.mat'));
+  I2colomn = I2(:);
+  I3 = struct2array(load('I3.mat'));
+  I3colomn = I3(:);
+  I4 = struct2array(load('I4.mat'));
+  I4colomn = I4(:);
+  I5 = struct2array(load('I5.mat'));
+  I5colomn = I5(:);
+  I6 = struct2array(load('I6.mat'));
+  I6colomn = I6(:);
+  I7 = struct2array(load('I7.mat'));
+  I7colomn = I7(:);
+  ITotal = horzcat(I2colomn,I3colomn,I4colomn,I5colomn,I6colomn,I7colomn);
+  ITotalColomn = ITotal(:);
+
+%%
+
+
+
+
 %inizializzazione parametri per il calcolo delle performance
-[TrueP,TrueN,FalseP,FalseN,W_graph] = PerformanceNew(W_matrix,I)
-% Ottieni le coordinate degli archi nella matrice
-[righe, colonne] = find(W_graph);
+%[TrueP,TrueN,FalseP,FalseN,W_graph] = PerformanceNew(W_matrixTotal,ITotal)
 
-% Crea il grafo orientato
-grafo = digraph(righe, colonne);
+[soglia,AUC] = myROC(W_matrixTotal,ITotal);
 
-% Visualizza il grafo
-figure(99)
-plot(grafo);
-
-
-
-
-
-
-
-
-
-
-
+%%
+CreateGraph(W_matrix7,I7,soglia)
 
 
 
