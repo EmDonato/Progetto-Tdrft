@@ -38,7 +38,7 @@ autoregressiveST = ['Autoregressive_v2.mat',"Autoregressive_v3.mat",'Autoregress
 
     
 % parametri per i cicli
-Nepoch = 100;
+Nepoch = 5;
 %NTarget = 6;
 NTarget = 3;
 W_matrix = struct2array(load('W_matrix.mat'));
