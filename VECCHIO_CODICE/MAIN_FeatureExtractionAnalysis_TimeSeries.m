@@ -21,8 +21,9 @@ save('i_target.mat','i_target');
 
 %%
 % autoregressiveST = ['Autoregressive_v2.mat',"Autoregressive_v3.mat",'Autoregressive_v4.mat','Autoregressive_v5.mat','Autoregressive_v6.mat','Autoregressive_v7.mat','Autoregressive_v8.mat'];
+% autoregressiveST = ['Autoregressive_v8_C=0.mat',"Autoregressive_v8_C=0.1.mat",'Autoregressive_v8_C=0.2.mat','Autoregressive_v8_C=0.3.mat','Autoregressive_v8_C=3.mat','Autoregressive_v8_C=1.mat','Autoregressive_v8_C=8.mat'];
 
-for j_autoregressive_targhet = 1:7
+for j_autoregressive_targhet = 1:6
 
     save('j_autoregressive_targhet.mat','j_autoregressive_targhet');
     i_target = 1;
@@ -34,11 +35,12 @@ for i_target = 1 : NTarget
 
 W_old = struct2array(load('W_old.mat'));
 clear all; clc; warning off;
-autoregressiveST = ['Autoregressive_v2.mat',"Autoregressive_v3.mat",'Autoregressive_v4.mat','Autoregressive_v5.mat','Autoregressive_v6.mat','Autoregressive_v7.mat','Autoregressive_v8.mat'];
+autoregressiveST = ['Autoregressive_v2.mat',"Autoregressive_v3.mat",'Autoregressive_v4.mat','Autoregressive_v5.mat','Autoregressive_v6.mat','Autoregressive_v7.mat'];
+%autoregressiveST = ['Autoregressive_v8_C=0.mat',"Autoregressive_v8_C=0.1.mat",'Autoregressive_v8_C=0.2.mat','Autoregressive_v8_C=0.3.mat','Autoregressive_v8_C=3.mat','Autoregressive_v8_C=1.mat','Autoregressive_v8_C=8.mat'];
 
     
 % parametri per i cicli
-Nepoch = 5;
+Nepoch = 150;
 %NTarget = 6;
 NTarget = 3;
 W_matrix = struct2array(load('W_matrix.mat'));
@@ -405,7 +407,7 @@ end
 [soglia,AUC] = myROC(W_matrixTotal,ITotal);
 
 %%
- CreateGraph(W_matrix7,I7,soglia)
+ CreateGraph(W_matrix3,I3,0.1)
 % %%
 % %inizializzazione parametri per il calcolo delle performance
 % %[TrueP,TrueN,FalseP,FalseN,W_graph] = PerformanceNew(W_matrix,I)

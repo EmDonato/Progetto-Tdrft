@@ -5,6 +5,8 @@ FP = 0;
 FN = 0;
 
 
+
+
 d = size(w);
 ausI = I;
 M = d(1);
@@ -19,7 +21,11 @@ end
 ausIcolomn = ausI(:);
 ausWcolomn = w(:);
 ausWcolomnCheck = ausWcolomn;
-%Roc
+minnumb = min(ausWcolomn);
+
+
+
+
 
 numTrials = 100;
 if max(ausI) == 0
@@ -29,12 +35,17 @@ else
      maxnumb = max(ausWcolomn);
 end
 
-threshold = linspace(0,maxnumb,numTrials);
+threshold = linspace(minnumb,maxnumb,numTrials);
 disp('threshold');
 disp(threshold);
 TPR = zeros(numTrials,1);
 FPR = zeros(numTrials,1);
 dn = size(ausIcolomn);
+
+
+%f1  vector
+F1_scoreVector = zeros(size(threshold));
+
 
 for j = 1:numTrials
 
@@ -43,11 +54,14 @@ TN = 0;
 FP = 0;
 FN = 0;
 
+
+
+
  for i = 1 :dn(1)
 
      fprintf('Valore di threshold(j): %.4f\n', threshold(j));
 
-    if ausWcolomnCheck(i,1) >= threshold(j)
+    if ausWcolomnCheck(i,1) > threshold(j)
          ausWcolomn(i,1) = 1;
     else
          ausWcolomn(i,1) = 0;
@@ -63,6 +77,9 @@ FN = 0;
        TN = TN + 1;
 
     end
+
+
+
 
  end
  if TP == 0 && (TP+FN) == 0
@@ -87,6 +104,13 @@ fprintf('Valore di FN: %.4f\n', FN);
 fprintf('Valore di TPR: %.4f\n', TPR(i));
 fprintf('Valore di FPR: %.4f\n', FPR(i));
 
+
+%% F1 plot
+precisione = TP / (TP + FP);
+richiamo = TP / (TP + FN);
+F1_score = 2 * (precisione * richiamo) / (precisione + richiamo);
+F1_scoreVector(j)= F1_score;
+
 end
  % ROC
 figure(77)
@@ -94,6 +118,14 @@ plot(FPR, TPR, 'LineWidth', 2, 'MarkerSize', 8);
 xlabel('False Positive Rate (FPR)');
 ylabel('True Positive Rate (TPR)');
 title('Curva ROC');
+grid on;
+
+%% F1 plot
+figure(34);
+plot(threshold, F1_scoreVector, 'LineWidth', 2);
+xlabel('Soglia di Threshold');
+ylabel('F1-score');
+title('Variazione dell F1-score al variare della soglia di threshold');
 grid on;
 
 

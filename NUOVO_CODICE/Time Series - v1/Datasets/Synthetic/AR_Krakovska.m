@@ -24,14 +24,10 @@ y = normrnd(0,sigmay,1,N);
 
 % I(i,j) significa che i causa j (serve per fare il controllo) 
 
-I(1,1) = 1;
-I(2,2) = 1;
-if C == 0
-    I(1,2) = 0;
-else 
-    I(1,2) = 1;
-end 
-I(2,1) = 1;
+I(1,1) = 0.5;
+I(2,2) = 0.7;
+I(1,2) = C;
+I(2,1) = 0.2;
 
 for i = 2 : N
 
@@ -42,5 +38,38 @@ end
 
 X(1,:) = x(1,2e4+1:N);
 X(2,:) = y(1,2e4+1:N);
+%% plot
+
+figure(1)
+clf
+for i = 1 : M
+    subplot(floor(M/2),floor(M/floor(M/2))+1,i)
+    plot(X(i,:),'b')
+end
+
+
+%% filtro
+
+
+% Design a low-pass filter
+cutoff_frequency = 0.7; 
+filter_order = 4;       % Filter order
+
+[b, a] = butter(filter_order, cutoff_frequency, 'low');
+
+% Apply the filter to the data using the 'filter' function
+Y = filter(b, a, X);
+
+
+figure(11)
+clf
+for i = 1 : M
+    subplot(floor(M/2),floor(M/floor(M/2))+1,i)
+    plot(Y(i,:),'b')
+end
+
+
+
+
 
 save("AR_Krakovska_C_=_"+C+".mat","X","C","I")

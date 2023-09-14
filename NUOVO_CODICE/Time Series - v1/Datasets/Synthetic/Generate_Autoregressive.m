@@ -135,6 +135,7 @@ X = calculate_autoregressive(M,N,I);
 save('Autoregressive_v7.mat');
 
 %% configuration 8
+clear all; clc;
 
 N = 1e4;
 M = 3;
@@ -144,11 +145,34 @@ c = 0;
 I = zeros(M,M);
 aus = 10;
 % I(i,j) significa che i causa j con intensità I(i,j) 
-for c = 0:0.1:2
+for c = 0:0.1:0.8
     aus = aus*c;
     I(1,3) = 0.8;
     I(2,1) = 0.6;
-    I(3,2) = c;
+    I(2,3) = 1.2;
+    I(3,3) = 0.2;
+    I(1,2) = c;
+    X = calculate_autoregressive(M,N,I);
+    save("Autoregressive_v8_C="+aus+".mat");
+    aus = 10;
+end
+%% configuration 8
+clear all; clc;
+N = 1e4;
+M = 3;
+
+c = 0;
+% I = interaction matrix
+I = zeros(M,M);
+aus = 10;
+% I(i,j) significa che i causa j con intensità I(i,j) 
+for c = 0:0.01:0.03
+    aus = aus*c;
+    I(1,3) = 0.8;
+    I(2,1) = 0.6;
+    I(2,3) = 1.2;
+    I(3,3) = 0.2;
+    I(1,2) = c;
     X = calculate_autoregressive(M,N,I);
     save("Autoregressive_v8_C="+aus+".mat");
     aus = 10;

@@ -150,7 +150,7 @@ I = zeros(M,M);
 
 % I(i,j) significa che i causa j con intensità I(i,j) 
 
-I(2,1) = 1;
+I(2,1) = 0.1;
 I(3,2) = 1;
 %% initialisation
 
@@ -191,7 +191,7 @@ I = zeros(M,M);
 
 % I(i,j) significa che i causa j con intensità I(i,j) 
 
-I(2,1) = 1;
+I(2,1) = 0.2;
 I(3,1) = 1;
 
 %% initialisation
